@@ -11,6 +11,8 @@ COPY *.*proj ./
 COPY NuGet.config ./
 RUN dotnet restore
 
+RUN dotnet --version
+
 # Copy remaining project artefacts and build
 COPY . ./
 RUN dotnet publish -c Release -o out --no-restore
