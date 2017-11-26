@@ -1,0 +1,11 @@
+language: F#
+
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker build -t fsharpdotnetcore ./FSharpDotNetCore
+  - docker ps -a
+  - docker run --rm -p 8080:80 fsharpdotnetcore
