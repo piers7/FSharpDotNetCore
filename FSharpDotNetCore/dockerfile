@@ -1,0 +1,22 @@
+﻿FROM microsoft/dotnet-nightly:2.1-sdk AS build-env
+WORKDIR /app
+
+# This dockerfile copied from example at
+# https://github.com/dotnet/dotnet-docker-samples/blob/master/dotnetapp-prod-alpine-preview/Dockerfile
+# See also https://docs.docker.com/engine/examples/dotnetcore/#prerequisites
+
+# Create a layer that contains just the nuget dependencies. 
+COPY *.*proj ./
+# Note case sensitive on NuGet.config! Not using at the moment anyway!
+# COPY NuGet.config ./
+RUN dotnet restore
+
+# Copy remaining project artefacts and build
+COPY . ./
+RUN dotnet publish -c Release -o out --no-restore
+
+# Create a runtime image, by copying project output into a new image
+FROM microsoft/dotnet-nightly:2.1-runtime-alpine
+WORKDIR /app
+COPY --from=build-env /app/out ./
+ENTRYPOINT ["dotnet", "FSharpDotNetCore.dll"]
