@@ -14,6 +14,7 @@
       <DependentUpon>dockerfile</DependentUpon>
     </None>
     <None Include="dockerfile" />
+    <None Include="NuGet.config" />
   </ItemGroup>
 
   <ItemGroup>
